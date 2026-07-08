@@ -6,8 +6,8 @@
   const link = document.createElement('a');
   link.id = 'back-to-projects-hub';
   link.href = 'https://nathan-ch.github.io/hub-projets/';
-  link.title = 'Retour au Hub de Projets';
-  link.innerHTML = '&larr; Hub';
+  link.title = 'Retour à la liste des projets';
+  link.innerHTML = '&larr; Mes autres projets';
   
   // Styles CSS minimalistes injectés (indépendant du design du site hôte)
   link.style.cssText = `
