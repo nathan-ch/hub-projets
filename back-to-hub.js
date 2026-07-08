@@ -15,28 +15,27 @@
     bottom: 15px;
     left: 15px;
     z-index: 99999;
-    background-color: #161b22;
-    color: #c9d1d9;
-    border: 1px solid #30363d;
-    padding: 6px 12px;
+    color: #8b949e;
+    background: transparent;
+    border: none;
+    padding: 4px 8px;
     font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    font-size: 12px;
-    font-weight: bold;
+    font-size: 11px;
     text-decoration: none;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+    opacity: 0.4;
+    transition: opacity 0.2s, color 0.2s;
   `;
 
   // Gestion dynamique du survol (hover)
   link.addEventListener('mouseenter', () => {
-    link.style.backgroundColor = '#21262d';
-    link.style.borderColor = '#58a6ff';
+    link.style.opacity = '1';
     link.style.color = '#58a6ff';
+    link.style.textDecoration = 'underline';
   });
   link.addEventListener('mouseleave', () => {
-    link.style.backgroundColor = '#161b22';
-    link.style.borderColor = '#30363d';
-    link.style.color = '#c9d1d9';
+    link.style.opacity = '0.4';
+    link.style.color = '#8b949e';
+    link.style.textDecoration = 'none';
   });
 
   // Injection dans le DOM du site hôte
