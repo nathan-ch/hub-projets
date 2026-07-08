@@ -15,14 +15,14 @@
     bottom: 15px;
     left: 15px;
     z-index: 99999;
-    color: #8b949e;
+    color: #6e7681;
     background: transparent;
     border: none;
     padding: 4px 8px;
     font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     font-size: 11px;
     text-decoration: none;
-    opacity: 0.4;
+    opacity: 0.65;
     transition: opacity 0.2s, color 0.2s;
   `;
 
@@ -33,8 +33,8 @@
     link.style.textDecoration = 'underline';
   });
   link.addEventListener('mouseleave', () => {
-    link.style.opacity = '0.4';
-    link.style.color = '#8b949e';
+    link.style.opacity = '0.65';
+    link.style.color = '#6e7681';
     link.style.textDecoration = 'none';
   });
 
