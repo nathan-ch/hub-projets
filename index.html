@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nathan | Hub de Projets Statiques</title>
+  <meta name="description" content="Une page d'accueil centralisant mes projets, outils et sites statiques hébergés sur GitHub Pages.">
+  
+  <style>
+    /* Configuration des variables et thèmes */
+    :root {
+      /* Thème Clair par défaut */
+      --bg-color: #f6f8fa;
+      --text-color: #24292e;
+      --text-muted: #57606a;
+      --border-color: #d0d7de;
+      --card-bg: #ffffff;
+      --accent-color: #0969da; /* Bleu GitHub */
+      --accent-hover-bg: #f3f4f6;
+      --tag-bg: #afb8c133;
+      --tag-text: #24292e;
+      --font-mono: ui-monospace, SFMono-Regular, SF Mono, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        /* Thème Sombre automatique */
+        --bg-color: #0d1117;
+        --text-color: #c9d1d9;
+        --text-muted: #8b949e;
+        --border-color: #30363d;
+        --card-bg: #161b22;
+        --accent-color: #58a6ff; /* Bleu clair */
+        --accent-hover-bg: #21262d;
+        --tag-bg: #21262d;
+        --tag-text: #8b949e;
+      }
+    }
+
+    /* Styles globaux */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: var(--font-mono);
+      line-height: 1.6;
+      padding: 2rem 1rem;
+      max-width: 900px;
+      margin: 0 auto;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Typographie */
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-wrap: balance;
+    }
+
+    h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      text-wrap: balance;
+    }
+
+    p {
+      text-wrap: pretty;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* En-tête */
+    header {
+      margin-bottom: 2.5rem;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 1.5rem;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Zone de recherche */
+    .search-container {
+      margin-bottom: 2rem;
+      display: flex;
+      gap: 0.5rem;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      background-color: var(--card-bg);
+      color: var(--text-color);
+      border: 1px solid var(--border-color);
+      border-radius: 0; /* Brutaliste : pas de coins arrondis */
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent-color);
+    }
+
+    .search-counter {
+      align-self: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      margin-left: 0.5rem;
+    }
+
+    /* Grille de projets */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    /* Carte de projet */
+    article {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: border-color 0.2s ease, transform 0.1s ease;
+    }
+
+    article:hover {
+      border-color: var(--accent-color);
+    }
+
+    article h2 {
+      color: var(--text-color);
+      transition: color 0.2s ease;
+    }
+
+    article:hover h2 {
+      color: var(--accent-color);
+    }
+
+    .project-body {
+      margin-bottom: 1.25rem;
+    }
+
+    .project-description {
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Tags */
+    .tags-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      list-style: none;
+    }
+
+    .tag {
+      font-size: 0.75rem;
+      padding: 0.15rem 0.4rem;
+      background-color: var(--tag-bg);
+      color: var(--tag-text);
+      border: 1px solid transparent;
+    }
+
+    article:hover .tag {
+      border-color: var(--border-color);
+    }
+
+    /* Liens d'action */
+    .project-links {
+      display: flex;
+      gap: 1rem;
+      border-top: 1px solid var(--border-color);
+      padding-top: 0.75rem;
+      font-size: 0.85rem;
+    }
+
+    .project-links a {
+      color: var(--accent-color);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.25rem 0.5rem;
+      transition: background-color 0.2s ease;
+    }
+
+    .project-links a:hover {
+      background-color: var(--accent-hover-bg);
+      text-decoration: underline;
+    }
+
+    /* Message en cas de recherche vide */
+    .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 3rem 1rem;
+      border: 1px dashed var(--border-color);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      display: none;
+    }
+
+    /* Pied de page */
+    footer {
+      border-top: 1px dashed var(--border-color);
+      padding-top: 1.5rem;
+      margin-top: 4rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    footer p {
+      margin-bottom: 0.5rem;
+    }
+
+    footer a {
+      color: var(--text-color);
+      text-decoration: underline;
+    }
+
+    footer a:hover {
+      color: var(--accent-color);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>NATHAN CHATEAU - PROJETS</h1>
+    <p class="subtitle">Index de mes projets accessibles.</p>
+  </header>
+
+  <section aria-label="Recherche et filtres">
+    <div class="search-container">
+      <input 
+        type="search" 
+        id="search" 
+        class="search-input" 
+        placeholder="Rechercher un projet par nom, tag ou description..." 
+        aria-label="Rechercher un projet"
+        autocomplete="off"
+      >
+      <span id="counter" class="search-counter" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <main>
+    <div id="grid" class="projects-grid">
+      <!-- Les cartes de projets seront générées ici par JavaScript -->
+      <div id="no-results-msg" class="no-results">
+        Aucun projet ne correspond à vos critères de recherche.
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>Contact : <a href="mailto:chateaunathan@proton.me">chateaunathan@proton.me</a></p>
+    <p>Dernière mise à jour : <span id="update-date">Juillet 2026</span></p>
+  </footer>
+
+  <script>
+    // ----------------------------------------------------
+    // BASE DE DONNÉES DES PROJETS (À ÉDITER SIMPLEMENT ICI)
+    // ----------------------------------------------------
+    const projects = [
+      {
+        name: "Calepinage Brasseur d'Air",
+        description: "Calcul du nombre, du diamètre et de l'implantation optimale de brasseurs d'air de plafond selon les publications ADEME (BRASSE).",
+        tags: ["Thermique", "Confort d'été", "dimensionnement", "ADEME", "Brasseur"],
+        liveUrl: "https://nathan-ch.github.io/calepinage-brasseur-air/",
+        repoUrl: "https://github.com/nathan-ch/calepinage-brasseur-air"
+      },
+      {
+        name: "Calculateur Confort Thermique",
+        description: "Évaluation de la sensation thermique et du taux d'insatisfaction (indices PMV/PPD) conformément à la norme ISO 7730.",
+        tags: ["Thermique", "Confort"],
+        liveUrl: "https://nathan-ch-calculateur-confort-thermique-app-vzvj3c.streamlit.app/",
+        repoUrl: "https://github.com/nathan-ch/calculateur-confort-thermique"
+      },
+      {
+        name: "Évolution Facture Énergie",
+        description: "Simulateur d'évolution historique et prévisionnelle des dépenses énergétiques selon différents tarifs de fourniture et d'abonnement.",
+        tags: ["Facture", "Simulation", "Dépenses"],
+        liveUrl: "https://nathan-ch.github.io/evolution_facture_energie/",
+        repoUrl: "https://github.com/nathan-ch/evolution_facture_energie"
+      },
+      {
+        name: "Convertisseur d'Énergie",
+        description: "Outil de conversion réciproque d'unités physiques et énergétiques (Wh, Joules, Tep, stères de bois, combustibles).",
+        tags: ["Énergie", "Conversion", "convertisseur"],
+        liveUrl: "https://nathan-ch.github.io/convertisseur_energie/",
+        repoUrl: "https://github.com/nathan-ch/convertisseur_energie"
+      }
+    ];
+
+    // Références DOM
+    const grid = document.getElementById('grid');
+    const searchInput = document.getElementById('search');
+    const counter = document.getElementById('counter');
+    const noResultsMsg = document.getElementById('no-results-msg');
+
+    // Fonction de génération d'une carte projet
+    function createProjectCard(project) {
+      const article = document.createElement('article');
+      article.classList.add('project-card');
+
+      // Corps du projet
+      const bodyDiv = document.createElement('div');
+      bodyDiv.classList.add('project-body');
+
+      const title = document.createElement('h2');
+      title.textContent = project.name;
+      bodyDiv.appendChild(title);
+
+      const description = document.createElement('p');
+      description.classList.add('project-description');
+      description.textContent = project.description;
+      bodyDiv.appendChild(description);
+
+      const tagsList = document.createElement('ul');
+      tagsList.classList.add('tags-list');
+      project.tags.forEach(tag => {
+        const li = document.createElement('li');
+        li.classList.add('tag');
+        li.textContent = tag.toLowerCase();
+        tagsList.appendChild(li);
+      });
+      bodyDiv.appendChild(tagsList);
+      article.appendChild(bodyDiv);
+
+      // Liens
+      const linksDiv = document.createElement('div');
+      linksDiv.classList.add('project-links');
+
+      const liveLink = document.createElement('a');
+      liveLink.href = project.liveUrl;
+      liveLink.target = "_blank";
+      liveLink.rel = "noopener noreferrer";
+      liveLink.innerHTML = "Site &rarr;";
+      linksDiv.appendChild(liveLink);
+
+      const repoLink = document.createElement('a');
+      repoLink.href = project.repoUrl;
+      repoLink.target = "_blank";
+      repoLink.rel = "noopener noreferrer";
+      repoLink.innerHTML = "Code &nearr;";
+      linksDiv.appendChild(repoLink);
+
+      article.appendChild(linksDiv);
+      return article;
+    }
+
+    // Fonction de rendu de la grille filtrée
+    function renderProjects(filterText = '') {
+      // Nettoyer la grille (sauf le message d'erreur de recherche)
+      const cards = grid.querySelectorAll('.project-card');
+      cards.forEach(card => card.remove());
+
+      const query = filterText.toLowerCase().trim();
+      let matchCount = 0;
+
+      projects.forEach(project => {
+        const matchesName = project.name.toLowerCase().includes(query);
+        const matchesDesc = project.description.toLowerCase().includes(query);
+        const matchesTags = project.tags.some(tag => tag.toLowerCase().includes(query));
+
+        if (matchesName || matchesDesc || matchesTags) {
+          const card = createProjectCard(project);
+          // Insérer avant le message d'absence de résultats
+          grid.insertBefore(card, noResultsMsg);
+          matchCount++;
+        }
+      });
+
+      // Mettre à jour le compteur
+      counter.textContent = `${matchCount} projet${matchCount > 1 ? 's' : ''}`;
+
+      // Affichage du message en cas de résultat vide
+      if (matchCount === 0) {
+        noResultsMsg.style.display = 'block';
+      } else {
+        noResultsMsg.style.display = 'none';
+      }
+    }
+
+    // Écouteur d'événement sur la recherche
+    searchInput.addEventListener('input', (e) => {
+      renderProjects(e.target.value);
+    });
+
+    // Initialisation : rendu des projets initiaux au chargement
+    document.addEventListener('DOMContentLoaded', () => {
+      renderProjects();
+      
+      // Mettre à jour l'année dynamique dans le footer si besoin
+      const now = new Date();
+      const options = { month: 'long', year: 'numeric' };
+      const formattedDate = now.toLocaleDateString('fr-FR', options);
+      // Capitaliser le premier caractère
+      const dateText = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+      document.getElementById('update-date').textContent = dateText;
+    });
+  </script>
+</body>
+</html>
