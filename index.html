@@ -149,6 +149,11 @@
       transition: color 0.2s ease;
     }
 
+    article h2 a {
+      text-decoration: none;
+      color: inherit;
+    }
+
     article:hover h2 {
       color: var(--accent-color);
     }
@@ -323,8 +328,14 @@
       const bodyDiv = document.createElement('div');
       bodyDiv.classList.add('project-body');
 
+      const titleLink = document.createElement('a');
+      titleLink.href = project.liveUrl;
+      titleLink.target = "_blank";
+      titleLink.rel = "noopener noreferrer";
+      titleLink.textContent = project.name;
+
       const title = document.createElement('h2');
-      title.textContent = project.name;
+      title.appendChild(titleLink);
       bodyDiv.appendChild(title);
 
       const description = document.createElement('p');
